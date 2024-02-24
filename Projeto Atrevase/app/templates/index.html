@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div id="tituloProdutos">
+        PRODUTOS
+    </div>
+
+    <div id="barraPesquisa">
+        <label for="numeroProduto">ID ou Nome:</label>
+        <input type="text" id="numeroProduto" oninput="filtrarProdutos()">
+    </div>
+
+    <div id="produtos-container">
+        {% for produto in produtos %}
+            <div class="produto" data-numero="{{ produto.numero }}" data-nome="{{ produto.nome | lower }}">
+                <img src="{{ url_for('static', filename='fotos/' + produto.foto) }}" alt="{{ produto.nome }}">
+                <p><strong>Nome:</strong> {{ produto.nome }}</p>
+                <p><strong>Quantidade:</strong> {{ produto.quantidade }}</p>
+                <p><strong>Valor:</strong> ${{ produto.valor }}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function filtrarProdutos() {
+            var inputTexto = document.getElementById('numeroProduto').value.toLowerCase();
+            var produtos = document.getElementsByClassName('produto');
+
+            for (var i = 0; i < produtos.length; i++) {
+                var numeroProduto = produtos[i].getAttribute('data-numero').toLowerCase();
+                var nomeProduto = produtos[i].getAttribute('data-nome');
+
+                if (numeroProduto.includes(inputTexto) || nomeProduto.includes(inputTexto)) {
+                    produtos[i].style.display = 'block';
+                } else {
+                    produtos[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
